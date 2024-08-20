@@ -16,7 +16,10 @@ class AuthController extends Controller
         $request->validate([
             "name" => "required",
             "email" => "required|email|unique:users",
-            "password" => "required|confirmed"
+            "password" => "required|confirmed",
+            "price_preference" => "required",
+            "hp_preference" => "required",
+            "drive_type_preference" => "required"
         ]);
 
         //send data to the database
@@ -24,6 +27,9 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = $request->password;
+        $user->price_preference = $request->price_preference;
+        $user->hp_preference = $request->hp_preference;
+        $user->drive_type_preference = $request->drive_type_preference;
 
         //save data
         $user->save();
@@ -116,14 +122,6 @@ class AuthController extends Controller
     {
         //get user token
         $token = $request->user()->token();
-
-//        if ($token->revoked == 1){
-//            //return response
-//            return response()->json([
-//                "status"=>false,
-//                "msg"=>"token invalid !!"
-//            ]);
-//        }
 
         //revoke token
         $token->revoke();

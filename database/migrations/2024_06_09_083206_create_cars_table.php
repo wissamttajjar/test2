@@ -15,8 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger("user_id");
             $table->string('brand');
-            $table->boolean('gas_Or_petrol');
-            $table->integer('Driven_distance');
+            $table->integer('year');
+            $table->integer('price');
+            $table->string('drive_type');
+            $table->integer('hp');
+            $table->string('auto_manual');
+            $table->string('image_1');
+            $table->string('image_2');
+            $table->string('image_3');
             $table->timestamps();
         });
     }

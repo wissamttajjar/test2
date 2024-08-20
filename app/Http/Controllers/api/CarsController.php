@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Car;
 use App\Models\User;
+use App\Models\Image;
 
 class CarsController extends Controller
 {
@@ -15,20 +16,55 @@ class CarsController extends Controller
     public function addCar(Request $request): JsonResponse
     {
         //validation
-        $request -> validate([
+        $request->validate([
 
             "brand" => "required",
-            "gas_Or_petrol" => "required",
-            "Driven_distance" => "required",
-
+            "year" => "required",
+            "price" => "required",
+            "drive_type" => "required",
+            "hp" => "required",
+            "auto_manual" => "required",
+            "image_1" => "required|image|mimes:jpeg,png,jpg",
+            "image_2" => "required|image|mimes:jpeg,png,jpg",
+            "image_3" => "required|image|mimes:jpeg,png,jpg",
         ]);
 
         $newCar = new Car();
 
         $newCar->user_id = auth()->user()->id;
         $newCar->brand = $request->brand;
-        $newCar->gas_Or_petrol = $request->gas_Or_petrol;
-        $newCar->Driven_distance = $request->Driven_distance;
+        $newCar->year = $request->year;
+        $newCar->price = $request->price;
+        $newCar->drive_type = $request->drive_type;
+        $newCar->hp = $request->hp;
+        $newCar->auto_manual = $request->auto_manual;
+
+        $imageName = rand() . '.' . $request->image_1->getClientOriginalExtension();
+        $request->image_1->move(public_path('uploads'), $imageName);
+        $path = "public/uploads/$imageName";
+        $newCar->image_1 = $path;
+
+        $imageName = rand() . '.' . $request->image_2->getClientOriginalExtension();
+        $request->image_2->move(public_path('uploads'), $imageName);
+        $path = "public/uploads/$imageName";
+        $newCar->image_2 = $path;
+
+        $imageName = rand() . '.' . $request->image_3->getClientOriginalExtension();
+        $request->image_3->move(public_path('uploads'), $imageName);
+        $path = "public/uploads/$imageName";
+        $newCar->image_3 = $path;
+
+        //        }
+//        foreach ($request->file('images') as $image) {
+//            // Generate a unique name for the image
+//            $uniqueName = Str::uuid()->toString() . '_' . time() . '.' . $image->getClientOriginalExtension();
+//
+//            // Move the image to the public/car_images directory
+//            $image->move(public_path('images'), $uniqueName);
+//
+//            // Save the image path to the database, associating it with the car
+//            $newCar->images()->create(['image_path' => 'images/' . $uniqueName]);
+//        }
 
         $newCar->save();
 
@@ -57,8 +93,11 @@ class CarsController extends Controller
 
             //update car data
             $car->brand = isset($request->brand) ? $request->brand : $car->brand;
-            $car->gas_Or_petrol = isset($request->gas_Or_petrol) ? $request->gas_Or_petrol : $car->gas_Or_petrol;
-            $car->Driven_distance = isset($request->Driven_distance) ? $request->Driven_distance : $car->Driven_distance;
+            $car->year = isset($request->year) ? $request->year : $car->year;
+            $car->price = isset($request->price) ? $request->price : $car->price;
+            $car->drive_type = isset($request->drive_type) ? $request->drive_type : $car->drive_type;
+            $car->hp = isset($request->hp) ? $request->hp : $car->hp;
+            $car->auto_manual = isset($request->auto_manual) ? $request->auto_manual : $car->auto_manual;
 
             $car->save();
 

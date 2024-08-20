@@ -24,6 +24,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'price_preference',
+        'hp_preference',
+        'drive_type_preference'
     ];
 
     /**
